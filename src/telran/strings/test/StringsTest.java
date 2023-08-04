@@ -30,5 +30,71 @@ class StringsTest {
 		assertFalse("a C".matches(regex));
 		assertFalse("_".matches(regex)); 
 	}
+	@Test
+	void zero_300_true_test() {
+		String regex = zero_300();
+		assertTrue("0".matches(regex));
+		assertTrue("10".matches(regex));
+		assertTrue("9".matches(regex));
+		assertTrue("100".matches(regex));
+		assertTrue("199".matches(regex));
+		assertTrue("200".matches(regex));
+		assertTrue("299".matches(regex));
+		assertTrue("300".matches(regex));
+	}
+	@Test
+	void zero_300_false_test() {
+		String regex = zero_300();
+		assertFalse("01".matches(regex));
+		assertFalse("1 0".matches(regex));
+		assertFalse("1_0".matches(regex));
+		assertFalse("301".matches(regex));
+		assertFalse("1000".matches(regex));
+		assertFalse("2.5".matches(regex));
+		assertFalse("a".matches(regex));
+		assertFalse("-1_0".matches(regex));
+	}
+	@Test
+	void ipV4OctetTrueTest() {
+		String regex = ipV4Octet();
+		assertTrue("0".matches(regex));
+		assertTrue("00".matches(regex));
+		assertTrue("000".matches(regex));
+		assertTrue("01".matches(regex));
+		assertTrue("1".matches(regex));
+		assertTrue("199".matches(regex));
+		assertTrue("220".matches(regex));
+		assertTrue("249".matches(regex));
+		assertTrue("250".matches(regex));
+		assertTrue("255".matches(regex));
+	}
+	@Test
+	void ipV4OctetFalseTest() {
+		String regex = ipV4Octet();
+		assertFalse("-21".matches(regex));
+		assertFalse("a".matches(regex));
+		assertFalse("1 0".matches(regex));
+		assertFalse("0000".matches(regex));
+		assertFalse("256".matches(regex));
+		assertFalse("1000".matches(regex));
+		assertFalse("300".matches(regex));
+	}
+	@Test
+	void ipV4TrueTest() {
+		String regex = ipV4Address();
+		assertTrue("1.2.3.4".matches(regex));
+		assertTrue("0.0.0.0".matches(regex));
+		assertTrue("000.0.0.0".matches(regex));
+		assertTrue("255.255.255.255".matches(regex));
+	}
+	@Test
+	void ipV4TFalseTest() {
+		String regex = ipV4Address();
+		assertFalse("1.2.3.".matches(regex));
+		assertFalse("1.2.3&4".matches(regex));
+		assertFalse("12.3.".matches(regex));
+		assertFalse("100".matches(regex));
+		assertFalse("1 2.3.4".matches(regex));
+	}
 
 }
