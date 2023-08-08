@@ -1,6 +1,19 @@
 package telran.strings;
 
+import java.util.*;
+import java.util.function.BinaryOperator;
+
 public class Strings {
+	public static final String WRONG_EXPRESSION = "Wrong arithmetic expresion syntax";
+	public static final String VARIABLE_NOT_DEFINED = "Variable is not defined";
+	static HashMap<String, BinaryOperator<Double>> mapOperations;
+	static {
+		mapOperations = new HashMap<>();
+		mapOperations.put("+", (a, b) -> a + b);
+		mapOperations.put("-", (a, b) -> a - b);
+		mapOperations.put("*", (a, b) -> a * b);
+		mapOperations.put("/", (a, b) -> a / b);
+	}
 static public String javaVariable() {
 	
 	return "[a-zA-Z$][\\w$]*|_[\\w$]+";
@@ -61,5 +74,26 @@ private static boolean bracketPairsValidation(String expression) {
 		res = count == 0;
 	}
 	return res;
+}
+public static double calculation(String expression, Map<String, Double> variableValues) {
+	if(!isArithmeticExpression(expression)) {
+		throw new IllegalArgumentException(WRONG_EXPRESSION);
+	}
+	expression = expression.replaceAll("[()\\s]+", ""); //removing brackets and spaces
+	String[] operators = expression.split(operand());
+	String[] operands = expression.split(operator());
+	double res = getValue(operands[0], variableValues);
+	for(int i = 1; i < operands.length; i++) {
+		double operand = getValue(operands[i], variableValues);
+		res = mapOperations.get(operators[i]).apply(res, operand);
+	}
+	
+	return res;
+}
+private static double getValue(String operand, Map<String, Double> variableValues) {
+	//TODO
+	double res ; //if operand is number then res will be Double.parseDouble(operand) otherwise the value should be got from the map
+	//if the operand is a variable and a value doesn't exist in the map the IllegalArgumentException should be thrown
+	return 0;
 }
 }
