@@ -116,5 +116,19 @@ class StringsTest {
 		assertFalse(" + a * b".matches(regex));
 		
 	}
+	@Test
+	void isArithmeticExpressionTrueTest() {
+		assertTrue(isArithmeticExpression("(a + (b /2) ) * 100"));
+		assertTrue(isArithmeticExpression("(a + ((b /2)  * 100)- 10 )"));
+		assertTrue(isArithmeticExpression(" (a + ( b /2 )) * 100"));
+		assertTrue(isArithmeticExpression("( a +  ( (b /2 )  * 100  )- 10)"));
+	}
+	@Test 
+	void isArithmeticExpressionFalseTest() {
+		assertFalse(isArithmeticExpression("(a + ((b /2) ( * 100)- 10 ))"));
+		assertFalse(isArithmeticExpression("(a + ((b /2)  * 100)- 10 )))"));
+		assertFalse(isArithmeticExpression("(a + ((b)))) /2)  * 100)- ((10 ))"));
+		assertFalse(isArithmeticExpression(" a) + ( (b /2 )  * 100  )- 10)"));
+	}
 
 }

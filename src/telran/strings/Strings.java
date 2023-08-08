@@ -28,9 +28,38 @@ public static String operator() {
 private static String operand() {
 	String numberExp = numberExp();
 	String variableExp = javaVariable();
-	return String.format("\\s*((%s|%s))\\s*", numberExp, variableExp);
+	return String.format("(\\s*\\(*\\s*)*((%s|%s))(\\s*\\)*\\s*)*", numberExp, variableExp);
 }
 private static String numberExp() {
+	
 	return "(\\d+\\.?\\d*|\\.\\d+)";
+}
+public static boolean isArithmeticExpression(String expression) {
+	boolean res = false;
+	if (bracketPairsValidation(expression)) {
+		res = expression.matches(arithmeticExpression());
+	}
+	return res;
+}
+private static boolean bracketPairsValidation(String expression) {
+	boolean res = true;
+	int count = 0;
+	char [] chars = expression.toCharArray();
+	int index = 0;
+	while(index < chars.length && res) {
+		if(chars[index] == '(') {
+			count++;
+		} else if(chars[index] == ')') {
+			count--;
+			if(count < 0) {
+				res = false;
+			}
+		}
+		index++;
+	}
+	if(res) {
+		res = count == 0;
+	}
+	return res;
 }
 }
