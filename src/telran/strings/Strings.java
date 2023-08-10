@@ -90,10 +90,13 @@ public static double calculation(String expression, Map<String, Double> variable
 	
 	return res;
 }
+//@SuppressWarnings("unused")
 private static double getValue(String operand, Map<String, Double> variableValues) {
-	//TODO
-	double res ; //if operand is number then res will be Double.parseDouble(operand) otherwise the value should be got from the map
-	//if the operand is a variable and a value doesn't exist in the map the IllegalArgumentException should be thrown
-	return 0;
+	
+	double res = operand.matches(numberExp()) ? Double.parseDouble(operand) : variableValues.getOrDefault(operand, Double.NaN);
+	if(Double.isNaN(res)) {
+		throw new IllegalArgumentException(VARIABLE_NOT_DEFINED);
+	}
+	return res;
 }
 }

@@ -3,6 +3,8 @@ package telran.strings.test;
 import static org.junit.jupiter.api.Assertions.*;
 import static telran.strings.Strings.*;
 
+import java.util.*;
+
 import org.junit.jupiter.api.Test;
 
 class StringsTest {
@@ -129,6 +131,20 @@ class StringsTest {
 		assertFalse(isArithmeticExpression("(a + ((b /2)  * 100)- 10 )))"));
 		assertFalse(isArithmeticExpression("(a + ((b)))) /2)  * 100)- ((10 ))"));
 		assertFalse(isArithmeticExpression(" a) + ( (b /2 )  * 100  )- 10)"));
+	}
+	@Test
+	void calculationExpressionTest() {
+		Map<String, Double> variables = new HashMap<>();
+		variables.put("a", -3.5);
+		variables.put("b", 5.5);
+		assertEquals(0, calculation("(a + (b /2) ) * 100 - 100", variables));
+		
+		assertThrowsExactly(IllegalArgumentException.class, ()->calculation("(a + (b /2) ) * 100 & 100", variables),
+				WRONG_EXPRESSION);
+		assertThrowsExactly(IllegalArgumentException.class, ()->calculation("(a + (b /2) ) * 100 - c", variables),
+				VARIABLE_NOT_DEFINED);
+		assertEquals(Double.POSITIVE_INFINITY, calculation("20 / 0 + a", variables));
+		assertEquals(Double.NEGATIVE_INFINITY, calculation("a - b / 0 + 7", variables));
 	}
 
 }
